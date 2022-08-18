@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">The Notes</string>
+    <string name="app_title">The Notes</string>
+    <string name="app_name_text_view">Note</string>
+    <string name="note_image_button_description">Note button</string>
+    <string name="todo_image_button_description">todo button</string>
 </resources>
