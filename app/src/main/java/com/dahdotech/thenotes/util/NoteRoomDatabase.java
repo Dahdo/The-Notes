@@ -49,5 +49,5 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    protected abstract NoteDao noteDao();
+    public abstract NoteDao noteDao();
 }
