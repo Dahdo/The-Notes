@@ -37,17 +37,17 @@ public class NoteRepository {
         });
     }
 
-    public void deleteAllNotes(){
+    public void deleteAll(){
         NoteRoomDatabase.dataWriterExecutor.execute(()->{
             noteDao.deleteAll();
         });
     }
 
-    public LiveData<Note> getNote(int id){
+    public LiveData<Note> get(int id){
         return noteDao.get(id);
     }
 
-    public LiveData<List<Note>> getAllNotes(){
+    public LiveData<List<Note>> getAll(){
         return allNotes;
     }
 
