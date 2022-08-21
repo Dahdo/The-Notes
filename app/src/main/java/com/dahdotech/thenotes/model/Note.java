@@ -20,7 +20,7 @@ public class Note {
 
     }
 
-    public Note(String title, String content, Date time) {
+    public Note(String title, @NonNull String content, Date time) {
         this.title = title;
         this.content = content;
         this.time = time;
