@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dahdotech.thenotes.R;
 import com.dahdotech.thenotes.model.Note;
+import com.dahdotech.thenotes.util.Utils;
 
 import org.w3c.dom.Text;
 
@@ -34,8 +35,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         Note note = noteList.get(position);
         holder.timeTextView.setText(note.getTitle());
         holder.titleTextView.setText(note.getTitle());
-        //holder.timeTextView.setText((int) note.getTime());
         holder.contentGlimpseTextView.setText(note.getContent());
+
+        String formattedTime = new Utils().formatDate(note.getTime());
+        holder.timeTextView.setText(formattedTime);
     }
 
     @Override
