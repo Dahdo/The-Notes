@@ -59,7 +59,7 @@
             android:layout_height="48dp"
             android:layout_margin="@dimen/image_button_margin"
             android:layout_weight="1"
-            android:background="@color/items_color"
+            android:background="@null"
             android:contentDescription="@string/note_image_button_description"
             app:srcCompat="@drawable/ic_baseline_book_24" />
 
@@ -69,9 +69,20 @@
             android:layout_height="48dp"
             android:layout_margin="@dimen/image_button_margin"
             android:layout_weight="1"
-            android:background="@color/items_color"
+            android:background="@null"
             android:contentDescription="@string/todo_image_button_description"
             app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_marginEnd="12dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

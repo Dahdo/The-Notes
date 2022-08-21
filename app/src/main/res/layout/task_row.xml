@@ -26,6 +26,14 @@
             android:padding="8dp">
 
             <TextView
+                android:id="@+id/task_title_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="23dp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/task_first_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
