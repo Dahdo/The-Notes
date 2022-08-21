@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
-    public static final int NUMBER_OF_THREADS = 3;
+    public static final int NUMBER_OF_THREADS = 4;
     public static volatile NoteRoomDatabase INSTANCE;
     public static final String DATABASE_NAME = "note_database";
     public static final ExecutorService dataWriterExecutor

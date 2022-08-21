@@ -16,7 +16,7 @@ public class NoteRepository {
     public NoteRepository(Application application){
         NoteRoomDatabase database = NoteRoomDatabase.getDatabase(application);
         noteDao = database.noteDao();
-        allNotes = noteDao.getAllNotes();
+        allNotes = noteDao.getAll();
     }
 
     public static void insert(Note note){
@@ -48,7 +48,7 @@ public class NoteRepository {
     }
 
     public LiveData<List<Note>> getAll(){
-        return allNotes;
+        return noteDao.getAll();
     }
 
 
