@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.dahdotech.thenotes.data.NoteDao;
@@ -16,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
+@TypeConverters({Converter.class})
 public abstract class NoteRoomDatabase extends RoomDatabase {
     public static final int NUMBER_OF_THREADS = 4;
     public static volatile NoteRoomDatabase INSTANCE;

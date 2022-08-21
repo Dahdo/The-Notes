@@ -2,40 +2,50 @@ package com.dahdotech.thenotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
+import com.dahdotech.thenotes.adapter.RecycleViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
-    private List<Note> allNotes = new ArrayList<>();
+    private RecyclerView notesRecyclerView;
+    private RecycleViewAdapter notesRecyclerViewAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         NoteViewModel noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
                 this.getApplication()).create(NoteViewModel.class);
 
-        Note firstNote = new Note();
-        firstNote.setId(0);
-        firstNote.setTitle("Testing1");
-        firstNote.setContent("I am testing to see how it is working!");
-        firstNote.setTime(new Date().getTime());
-        firstNote.setContent("I changed my mind");
+        notesRecyclerView = findViewById(R.id.recyclerView);
+        notesRecyclerView.setHasFixedSize(true);
+        notesRecyclerView.setLayoutManager((new LinearLayoutManager(this)));
+
+//        Note firstNote = new Note();
+//        firstNote.setId(0);
+//        firstNote.setTitle("Testing1");
+//        firstNote.setContent("I am testing to see how it is working... but now I am so hopful that is indeed working!");
+//        //firstNote.setTime(new Date());
 //        noteViewModel.insertNote(firstNote);
-//        noteViewModel.insertNote(firstNote);
-//        noteViewModel.insertNote(firstNote);
-//        noteViewModel.insertNote(firstNote);
+//
+//        Note second = new Note();
+//        second.setContent("hahahah");
+//        second.setTitle("Second");
+//        //second.setTime(new Date());
+//        noteViewModel.insertNote(second);
+
 
         noteViewModel.getAllNotes().observe(this, notes -> {
-
+            notesRecyclerViewAdapter = new RecycleViewAdapter(notes);
+            notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
         });
 
 

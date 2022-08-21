@@ -33,7 +33,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note note = noteList.get(position);
         holder.timeTextView.setText(note.getTitle());
-        holder.timeTextView.setText((int) note.getTime());
+        holder.titleTextView.setText(note.getTitle());
+        //holder.timeTextView.setText((int) note.getTime());
         holder.contentGlimpseTextView.setText(note.getContent());
     }
 

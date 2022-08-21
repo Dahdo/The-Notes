@@ -1,7 +1,6 @@
 package com.dahdotech.thenotes.model;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -14,13 +13,13 @@ public class Note {
 
     private String title;
     private String content;
-    private long time;
+    private Date time;
 
     public Note(){
 
     }
 
-    public Note(String title, @NonNull String content, long time) {
+    public Note(String title, @NonNull String content, Date time) {
         this.title = title;
         this.content = content;
         this.time = time;
@@ -50,11 +49,11 @@ public class Note {
         this.content = content;
     }
 
-    public long getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
