@@ -6,7 +6,7 @@ import java.util.Date;
 public class Utils {
     public String formatDate(Date date){
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getInstance();
-        simpleDateFormat.applyLocalizedPattern("EEE, MMM, d");
+        simpleDateFormat.applyLocalizedPattern("hh:mm aaa, MMM dd, yyyy");
 
         return simpleDateFormat.format(date);
     }

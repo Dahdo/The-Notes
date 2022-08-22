@@ -14,6 +14,7 @@ import com.dahdotech.thenotes.util.Utils;
 
 import org.w3c.dom.Text;
 
+import java.util.Date;
 import java.util.List;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
@@ -37,7 +38,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.titleTextView.setText(note.getTitle());
         holder.contentGlimpseTextView.setText(note.getContent());
 
-        String formattedTime = new Utils().formatDate(note.getTime());
+        String formattedTime = new Utils().formatDate(new Date(note.getTime()));
         holder.timeTextView.setText(formattedTime);
     }
 

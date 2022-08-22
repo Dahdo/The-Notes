@@ -13,13 +13,13 @@ public class Note {
 
     private String title;
     private String content;
-    private Date time;
+    private long time;
 
     public Note(){
 
     }
 
-    public Note(String title, @NonNull String content, Date time) {
+    public Note(String title, @NonNull String content, long time) {
         this.title = title;
         this.content = content;
         this.time = time;
@@ -49,11 +49,11 @@ public class Note {
         this.content = content;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
