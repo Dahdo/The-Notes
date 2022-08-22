@@ -1,4 +1,4 @@
-package com.dahdotech.thenotes;
+package com.dahdotech.thenotes.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.dahdotech.thenotes.R;
 import com.dahdotech.thenotes.adapter.RecycleViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
