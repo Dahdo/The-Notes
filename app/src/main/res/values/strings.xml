@@ -4,4 +4,6 @@
     <string name="app_name_text_view">Note</string>
     <string name="note_image_button_description">Note button</string>
     <string name="todo_image_button_description">todo button</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_hide">Hide</string>
 </resources>

@@ -11,7 +11,7 @@ public class Converter {
     }
 
     @TypeConverter
-    public static Long dateToTimestamp(Date date) {
+    public static Long ToTimestamp(Date date) {
         return date == null ? null : date.getTime();
     }
 }

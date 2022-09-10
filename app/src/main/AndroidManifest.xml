@@ -14,8 +14,16 @@
         android:theme="@style/Theme.TheNotes"
         tools:targetApi="31">
         <activity
+            android:name=".ui.NoteEditActivity"
+            android:exported="true"
+            android:parentActivityName=".ui.MainActivity"
+            android:label="Notes"
+            android:theme="@style/Theme.Design.Light">
+        </activity>
+        <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

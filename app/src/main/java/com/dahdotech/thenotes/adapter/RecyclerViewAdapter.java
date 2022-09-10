@@ -12,15 +12,13 @@ import com.dahdotech.thenotes.R;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.util.Utils;
 
-import org.w3c.dom.Text;
-
 import java.util.Date;
 import java.util.List;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<Note> noteList;
 
-    public RecycleViewAdapter(List<Note> noteList){
+    public RecyclerViewAdapter(List<Note> noteList){
         this.noteList = noteList;
     }
 
@@ -38,7 +36,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.titleTextView.setText(note.getTitle());
         holder.contentGlimpseTextView.setText(note.getContent());
 
-        String formattedTime = new Utils().formatDate(new Date(note.getTime()));
+        String formattedTime = new Utils().longDateFormat(new Date(note.getTime()));
         holder.timeTextView.setText(formattedTime);
     }
 
@@ -52,6 +50,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         protected TextView contentGlimpseTextView;
         protected TextView timeTextView;
         protected TextView numberOfCompletedTextView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.task_title_text_view);
