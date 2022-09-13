@@ -9,15 +9,18 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dahdotech.thenotes.R;
+import com.dahdotech.thenotes.adapter.OnNoteClickListener;
 import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
+import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 
 
-public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE_NEW_NOTE = "fab";
+public class MainActivity extends AppCompatActivity implements OnNoteClickListener {
+    public static final String EXTRA_MESSAGE_NEW_NOTE = "newNote";
+    public static final String EXTRA_MESSAGE_EXISTING_NOTE = "existingNote";
     private RecyclerView notesRecyclerView;
     private RecyclerViewAdapter notesRecyclerViewAdapter;
     private FloatingActionButton fab;
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         noteViewModel.getAllNotes().observe(this, notes -> {
-            notesRecyclerViewAdapter = new RecyclerViewAdapter(notes);
+            notesRecyclerViewAdapter = new RecyclerViewAdapter(notes, this);
             notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
         });
 
@@ -65,5 +68,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+    }
+
+    @Override
+    public void onNoteClick(int postion) {
+        Intent intent = new Intent(MainActivity.this, NoteEditActivity.class);
+        intent.putExtra(EXTRA_MESSAGE_EXISTING_NOTE, postion);
+        startActivity(intent);
     }
 }

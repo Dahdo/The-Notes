@@ -17,9 +17,11 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<Note> noteList;
+    private OnNoteClickListener onNoteClickListener;
 
-    public RecyclerViewAdapter(List<Note> noteList){
+    public RecyclerViewAdapter(List<Note> noteList, OnNoteClickListener onNoteClickListener){
         this.noteList = noteList;
+        this.onNoteClickListener = onNoteClickListener;
     }
 
     @NonNull
@@ -45,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return noteList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView titleTextView;
         protected TextView contentGlimpseTextView;
         protected TextView timeTextView;
@@ -57,6 +59,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             contentGlimpseTextView = itemView.findViewById(R.id.task_first_line);
             timeTextView = itemView.findViewById(R.id.task_time_created_text_view);
             numberOfCompletedTextView = itemView.findViewById(R.id.task_time_created_text_view);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onNoteClickListener.onNoteClick(getAdapterPosition());
         }
     }
+
 }

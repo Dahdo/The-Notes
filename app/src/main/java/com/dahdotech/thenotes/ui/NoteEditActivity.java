@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dahdotech.thenotes.R;
+import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
 import com.dahdotech.thenotes.util.Utils;
@@ -57,8 +59,23 @@ public class NoteEditActivity extends AppCompatActivity {
 
         //Creating a new note
         if(getIntent().hasExtra(MainActivity.EXTRA_MESSAGE_NEW_NOTE)){
-            timeTextView.setText(new Utils().shortDateFormat(calendar.getTime()));
             noteAlreadyExists = false;
+            timeTextView.setText(new Utils().shortDateFormat(calendar.getTime()));
+
+        }
+
+        //updating an existing note
+        if(getIntent().hasExtra(MainActivity.EXTRA_MESSAGE_EXISTING_NOTE)){
+            noteAlreadyExists = true;
+            int noteId = getIntent().
+                    getIntExtra(MainActivity.EXTRA_MESSAGE_EXISTING_NOTE, 0);
+            noteViewModel.getAllNotes().observe(this, notes -> {
+                currentNote = notes.get(noteId);
+                titleEditText.setText(currentNote.getTitle());
+                contentEditText.setText(currentNote.getContent());
+            });
+            Log.d("WHYAREYOUSTUPID", "current: " + currentNote);// idk why here the currentNote is null
+            timeTextView.setText(new Utils().shortDateFormat(Calendar.getInstance().getTime()));
         }
     }
 
@@ -68,7 +85,6 @@ public class NoteEditActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(noteTitle) || !TextUtils.isEmpty(noteContent)){
             createUpdateNote(noteTitle, noteContent);
         }
-
         new Utils().collapseKeyboard(this);
         contentEditText.setFocusable(false);
         titleEditText.setFocusable(false);
@@ -120,4 +136,5 @@ public class NoteEditActivity extends AppCompatActivity {
         contentEditText.setFocusableInTouchMode(true);
         //new Utils().undoCollapseKeyboard(this);
     }
+
 }
