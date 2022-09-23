@@ -7,10 +7,11 @@
     tools:context=".ui.MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -33,11 +34,14 @@
             android:layout_margin="@dimen/search_bar_margin">
 
             <SearchView
-
-                android:id="@+id/search_bar"
+                android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/items_color"
+                android:clickable="true"
+                app:queryBackground="@android:color/transparent"
+                android:queryBackground="@android:color/transparent"
+                android:iconifiedByDefault="false"
                 android:queryHint="Search Notes">
 
             </SearchView>
@@ -80,11 +84,12 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/root_layout">
 
     </androidx.recyclerview.widget.RecyclerView>
 

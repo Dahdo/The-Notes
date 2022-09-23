@@ -70,7 +70,7 @@ public class NoteEditActivity extends AppCompatActivity {
         if(getIntent().hasExtra(MainActivity.EXTRA_MESSAGE_NEW_NOTE)){
             noteAlreadyExists = false;
             timeTextView.setText(new Utils().shortDateFormat(calendar.getTime()));
-
+            titleEditText.requestFocus();
         }
 
         //updating an existing note

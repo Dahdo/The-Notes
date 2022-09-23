@@ -6,4 +6,5 @@
     <string name="todo_image_button_description">todo button</string>
     <string name="action_delete">Delete</string>
     <string name="action_hide">Hide</string>
+    <string name="search_hint">Search Notes</string>
 </resources>

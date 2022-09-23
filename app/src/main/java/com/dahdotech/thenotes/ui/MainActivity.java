@@ -4,9 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 
 import com.dahdotech.thenotes.R;
 import com.dahdotech.thenotes.adapter.OnNoteClickListener;
@@ -15,7 +21,9 @@ import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements OnNoteClickListener {
@@ -24,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     private RecyclerView notesRecyclerView;
     private RecyclerViewAdapter notesRecyclerViewAdapter;
     private FloatingActionButton fab;
+    private SearchView searchView;
+
+    private View rootView;
 
     private Calendar calendar = Calendar.getInstance();
 
@@ -31,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rootView = findViewById(R.id.root_layout);
 
         fab = findViewById(R.id.note_fab);
 
@@ -68,6 +80,45 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
             startActivity(intent);
         });
 
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView =
+                (SearchView)findViewById(R.id.search);
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            noteViewModel.getAllNotes().observe(MainActivity.this, notes -> {
+                List<Note> matchingNotes = new ArrayList<Note>();
+                for(Note note : notes){
+                    if(note.getTitle().toLowerCase().contains(s.toLowerCase()) || note.getContent().toLowerCase().contains(s.toLowerCase())){
+                        matchingNotes.add(note);
+                    }
+                }
+                notesRecyclerViewAdapter = new RecyclerViewAdapter(matchingNotes, MainActivity.this);
+                notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
+            });
+
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            onQueryTextSubmit(s);
+            return true;
+        }
+
+    });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        rootView.requestFocus();
     }
 
     @Override
