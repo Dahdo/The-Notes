@@ -11,9 +11,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:cardCornerRadius="4dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,14 +24,17 @@
             android:layout_height="match_parent"
             android:background="@color/items_color"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/task_title_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="Title"
-                android:textSize="23dp"
+                android:ems="16"
+                android:textSize="17dp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -39,7 +43,9 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="task first line"
-                android:textSize="20sp" />
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                android:ems="10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,22 +58,23 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
                     android:text="TextView"
+                    android:maxLines="1"
                     android:textSize="@dimen/time_and_no_of_completed_text_size" />
 
-                <ImageView
-                    android:id="@+id/completed_task_image_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.065"
-                    app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/completed_task_image_view"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="0.065"-->
+<!--                    app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />-->
 
-                <TextView
-                    android:id="@+id/number_of_completed_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
-                    android:text="TextView"
-                    android:textSize="@dimen/time_and_no_of_completed_text_size" />
+<!--                <TextView-->
+<!--                    android:id="@+id/number_of_completed_text_view"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="0.35"-->
+<!--                    android:text="TextView"-->
+<!--                    android:textSize="@dimen/time_and_no_of_completed_text_size" />-->
             </LinearLayout>
 
         </LinearLayout>
