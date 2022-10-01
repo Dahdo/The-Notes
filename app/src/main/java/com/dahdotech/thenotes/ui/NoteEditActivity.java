@@ -3,7 +3,10 @@ package com.dahdotech.thenotes.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.dahdotech.thenotes.R;
 import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
@@ -53,6 +57,7 @@ public class NoteEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_edit);
+
 
         timeTextView = findViewById(R.id.edit_note_time_text_view);
         titleEditText = findViewById(R.id.edit_note_title_edit_text);
