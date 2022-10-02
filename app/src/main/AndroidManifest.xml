@@ -17,7 +17,7 @@
             android:name=".ui.NoteEditActivity"
             android:exported="true"
             android:label="Notes"
-
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/Theme.Design.Light" >
         </activity>
         <activity

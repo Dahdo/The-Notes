@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -52,19 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
         notesRecyclerView = findViewById(R.id.recyclerView);
         notesRecyclerView.setHasFixedSize(true);
         notesRecyclerView.setLayoutManager((new LinearLayoutManager(this)));
-
-//        Note firstNote = new Note();
-//        firstNote.setId(0);
-//        firstNote.setTitle("Testing1");
-//        firstNote.setContent("I am testing to see how it is working... but now I am so hopful that is indeed working!");
-//        firstNote.setTime(calendar.getTime().getTime());
-//        noteViewModel.insertNote(firstNote);
-//
-//        Note second = new Note();
-//        second.setContent("hahahah");
-//        second.setTitle("Second");
-//        second.setTime(calendar.getTime().getTime());
-//        noteViewModel.insertNote(second);
 
 
         noteViewModel.getAllNotes().observe(this, notes -> {
@@ -109,9 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
             onQueryTextSubmit(s);
             return true;
         }
-
     });
-
 
     }
 

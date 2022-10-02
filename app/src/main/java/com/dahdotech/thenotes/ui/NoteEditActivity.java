@@ -3,29 +3,22 @@ package com.dahdotech.thenotes.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toolbar;
+import android.widget.Toast;
 
 import com.dahdotech.thenotes.R;
-import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
 import com.dahdotech.thenotes.util.Utils;
@@ -47,8 +40,9 @@ public class NoteEditActivity extends AppCompatActivity {
 
     NoteViewModel noteViewModel;
 
-    String noteTitle;
-    String noteContent;
+    private String noteTitle;
+    private String noteContent;
+    boolean deletedOrUpdated = false; //to avoid errors observing already deleted note object
 
 
     private Calendar calendar = Calendar.getInstance();
@@ -57,6 +51,10 @@ public class NoteEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_edit);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow_icon); // display homeAsUp button or back arrow
+
+
 
 
         timeTextView = findViewById(R.id.edit_note_time_text_view);
@@ -84,13 +82,12 @@ public class NoteEditActivity extends AppCompatActivity {
             int noteId = getIntent().
                     getIntExtra(MainActivity.EXTRA_MESSAGE_EXISTING_NOTE, 0);
             noteViewModel.getAllNotes().observe(this, notes -> {
-                if(!notes.isEmpty()){
+                if(!notes.isEmpty() && !deletedOrUpdated){
                     currentNote = notes.get(noteId);
                     titleEditText.setText(currentNote.getTitle());
                     contentEditText.setText(currentNote.getContent());
                 }
             });
-            Log.d("WHYAREYOUSTUPID", "current: " + currentNote);// idk why here the currentNote is null
             timeTextView.setText(new Utils().shortDateFormat(Calendar.getInstance().getTime()));
         }
 
@@ -107,16 +104,21 @@ public class NoteEditActivity extends AppCompatActivity {
     }
 
     private void deleteEventListener(){
+        deletedOrUpdated = true;
         noteViewModel.deleteNote(currentNote);
         this.finish();
     }
 
-    private void saveEventListener(){
+    private boolean saveEventListener(){
+        boolean success = false;
         saveButtonClicked = true;
         noteTitle = titleEditText.getText().toString().trim();
         noteContent = contentEditText.getText().toString().trim();
         if(!TextUtils.isEmpty(noteTitle) || !TextUtils.isEmpty(noteContent)){
-            createUpdateNote(noteTitle, noteContent);
+            if(!currentNote.getContent().equals(noteContent) || !currentNote.getTitle().equals(noteTitle)){
+                createUpdateNote(noteTitle, noteContent);
+                success = true;
+            }
         }
         new Utils().collapseKeyboard(this);
         contentEditText.setFocusable(false);
@@ -130,6 +132,8 @@ public class NoteEditActivity extends AppCompatActivity {
             mainMenu.getItem(1).setVisible(false);
             mainMenu.getItem(2).setVisible(true);
         }
+
+        return success;
     }
 
     //titleEditText.
@@ -139,6 +143,7 @@ public class NoteEditActivity extends AppCompatActivity {
             currentNote.setTitle(noteTitle);
             currentNote.setContent(noteContent);
             currentNote.setTime(calendar.getTime().getTime());
+            deletedOrUpdated = true;
             noteViewModel.updateNote(currentNote);
         }
         else {
@@ -209,7 +214,7 @@ public class NoteEditActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int count, int after) {
+            public void onTextChanged(CharSequence s, int start, int lengthBefore, int lengthAfter) {
                 if(s.length() == 0 && titleEditText.getText().toString().isEmpty()){
                     //hide all menuItems
                     menu.getItem(0).setVisible(false);
@@ -225,6 +230,27 @@ public class NoteEditActivity extends AppCompatActivity {
                         menu.getItem(0).setVisible(false);
                         menu.getItem(1).setVisible(true);
                         menu.getItem(2).setVisible(false);
+                    }
+                }
+                if(lengthAfter > lengthBefore && contentEditText.getText().toString().endsWith("\n")){
+                    boolean appendRestricted = false; //to avoid undoing what the 1st if statement did; for the 2nd if statement
+                                       String lastLine = getSplitLastLine(contentEditText.getText().toString(), "\n");
+
+                    if(lastLine.trim().equals("-") || lastLine.trim().equals("+")
+                            || lastLine.trim().equals("•")){
+                        contentEditText.setText(contentEditText.getText().toString().trim()
+                                .substring(0, contentEditText.getText().toString().trim().length() - 1));
+                        contentEditText.setSelection(contentEditText.getText().length());
+                        lastLine = getSplitLastLine(contentEditText.getText().toString(), "\n");
+                        appendRestricted = true;
+                    }
+
+                    if((lastLine.startsWith("- ") || lastLine.startsWith("+ ")
+                    || lastLine.startsWith("• ")) && !appendRestricted &&
+                            !contentEditText.getText().toString().endsWith("\n\n")){
+                        contentEditText.setText(contentEditText.getText().
+                                append(lastLine.substring(0, 2)));
+                        contentEditText.setSelection(contentEditText.getText().length());
                     }
                 }
             }
@@ -248,6 +274,10 @@ public class NoteEditActivity extends AppCompatActivity {
                 return true;
             case R.id.share:
                 shareEventListener();
+            case android.R.id.home: //when homeAsUp button clicked.
+                if(saveEventListener())
+                    Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -266,5 +296,14 @@ public class NoteEditActivity extends AppCompatActivity {
         //new Utils().undoCollapseKeyboard(this);
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(saveEventListener())
+            Toast.makeText(this, "Current note saved!", Toast.LENGTH_SHORT).show();
+    }
+    private String getSplitLastLine(String text, String delimeter){
+        String [] textLines = text.split(delimeter);
+        return textLines[textLines.length - 1];
+    }
 }
