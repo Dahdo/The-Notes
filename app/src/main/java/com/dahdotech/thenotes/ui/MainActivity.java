@@ -75,29 +75,29 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
                 (SearchView)findViewById(R.id.search);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String s) {
-            noteViewModel.getAllNotes().observe(MainActivity.this, notes -> {
-                List<Note> matchingNotes = new ArrayList<Note>();
-                for(Note note : notes){
-                    if(note.getTitle().toLowerCase().contains(s.toLowerCase()) || note.getContent().toLowerCase().contains(s.toLowerCase())){
-                        matchingNotes.add(note);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                noteViewModel.getAllNotes().observe(MainActivity.this, notes -> {
+                    List<Note> matchingNotes = new ArrayList<Note>();
+                    for(Note note : notes){
+                        if(note.getTitle().toLowerCase().contains(s.toLowerCase()) || note.getContent().toLowerCase().contains(s.toLowerCase())){
+                            matchingNotes.add(note);
+                        }
                     }
-                }
-                notesRecyclerViewAdapter = new RecyclerViewAdapter(matchingNotes, MainActivity.this);
-                notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
-            });
+                    notesRecyclerViewAdapter = new RecyclerViewAdapter(matchingNotes, MainActivity.this);
+                    notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
+                });
 
-            return true;
-        }
+                return true;
+            }
 
-        @Override
-        public boolean onQueryTextChange(String s) {
-            onQueryTextSubmit(s);
-            return true;
-        }
-    });
+            @Override
+            public boolean onQueryTextChange(String s) {
+                onQueryTextSubmit(s);
+                return true;
+            }
+        });
 
     }
 

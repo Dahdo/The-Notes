@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/maini_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
@@ -10,8 +11,8 @@
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,8 +31,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="@dimen/search_bar_margin">
+            android:layout_margin="@dimen/search_bar_margin"
+            app:cardCornerRadius="10dp">
 
             <SearchView
                 android:id="@+id/search"
@@ -39,10 +40,10 @@
                 android:layout_height="match_parent"
                 android:background="@color/items_color"
                 android:clickable="true"
-                app:queryBackground="@android:color/transparent"
-                android:queryBackground="@android:color/transparent"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search Notes">
+                android:queryBackground="@android:color/transparent"
+                android:queryHint="Search Notes"
+                app:queryBackground="@android:color/transparent">
 
             </SearchView>
         </androidx.cardview.widget.CardView>
@@ -50,35 +51,35 @@
     </LinearLayout>
 
     <!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout2"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/items_color"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent">-->
+    <!--        android:id="@+id/linearLayout2"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@color/items_color"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent">-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/note_image_button"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:layout_margin="@dimen/image_button_margin"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@null"-->
-<!--            android:contentDescription="@string/note_image_button_description"-->
-<!--            app:srcCompat="@drawable/ic_baseline_book_24" />-->
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/note_image_button"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="48dp"-->
+    <!--            android:layout_margin="@dimen/image_button_margin"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@null"-->
+    <!--            android:contentDescription="@string/note_image_button_description"-->
+    <!--            app:srcCompat="@drawable/ic_baseline_book_24" />-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/todo_image_button"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:layout_margin="@dimen/image_button_margin"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@null"-->
-<!--            android:contentDescription="@string/todo_image_button_description"-->
-<!--            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />-->
-<!--    </LinearLayout>-->
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/todo_image_button"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="48dp"-->
+    <!--            android:layout_margin="@dimen/image_button_margin"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@null"-->
+    <!--            android:contentDescription="@string/todo_image_button_description"-->
+    <!--            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />-->
+    <!--    </LinearLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

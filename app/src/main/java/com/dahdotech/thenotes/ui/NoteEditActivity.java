@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -115,7 +116,13 @@ public class NoteEditActivity extends AppCompatActivity {
         noteTitle = titleEditText.getText().toString().trim();
         noteContent = contentEditText.getText().toString().trim();
         if(!TextUtils.isEmpty(noteTitle) || !TextUtils.isEmpty(noteContent)){
-            if(!currentNote.getContent().equals(noteContent) || !currentNote.getTitle().equals(noteTitle)){
+            if(noteAlreadyExists){
+                if(!currentNote.getContent().equals(noteContent) || !currentNote.getTitle().equals(noteTitle)){
+                    createUpdateNote(noteTitle, noteContent);
+                    success = true;
+                }
+            }
+            else {
                 createUpdateNote(noteTitle, noteContent);
                 success = true;
             }
@@ -232,25 +239,54 @@ public class NoteEditActivity extends AppCompatActivity {
                         menu.getItem(2).setVisible(false);
                     }
                 }
-                if(lengthAfter > lengthBefore && contentEditText.getText().toString().endsWith("\n")){
-                    boolean appendRestricted = false; //to avoid undoing what the 1st if statement did; for the 2nd if statement
-                                       String lastLine = getSplitLastLine(contentEditText.getText().toString(), "\n");
+                if(lengthAfter > lengthBefore && getSelection(contentEditText, contentEditText.getSelectionEnd()).endsWith("\n")){
+                    boolean appendRestricted = false; //to avoid undoing what the 1st if statement did
+                    String wholeText;
+                    int selectionLength = contentEditText.getSelectionEnd();
+                    String selectedText = getSelection(contentEditText, selectionLength);
+                    String afterSelectedText = getAfterSelection(contentEditText, selectionLength);
+                    String lastLine = getSplitLastLine(selectedText, "\n");
+                    Log.d("OHHH", "endIndex: " + selectionLength
+                    + "\nselected: " + selectedText + "test" + "\nafterSelected: " + "test" + afterSelectedText + "end"
+                    + "\nlastLine: " + lastLine + "test");
 
                     if(lastLine.trim().equals("-") || lastLine.trim().equals("+")
                             || lastLine.trim().equals("•")){
-                        contentEditText.setText(contentEditText.getText().toString().trim()
-                                .substring(0, contentEditText.getText().toString().trim().length() - 1));
-                        contentEditText.setSelection(contentEditText.getText().length());
-                        lastLine = getSplitLastLine(contentEditText.getText().toString(), "\n");
+                        wholeText = selectedText.substring(0, selectedText.length() - (lastLine.length())); // wholeText = selectedText.substring(0, selectedText.length() - (lastLine.length()));
+                                                                                                            //can also work in case you want to stay in the inner section of bulleted list
+                        wholeText = wholeText .concat(afterSelectedText);
+                        contentEditText.setText(wholeText);
+                        if(selectionLength < 0)
+                            contentEditText.setSelection(0);
+                        contentEditText.setSelection(selectionLength - (lastLine.length()));
                         appendRestricted = true;
                     }
+                    else if(conformsToNumberFormat(lastLine.trim() + " ")){
+                        if(trimFront(lastLine).equals(getNumberPrefix(lastLine.trim()) + ". \n")){ // if(lastLine.equals(getNumberPrefix(lastLine.trim()) + ". \n")) true unless there are whitespaces before lastLine
+                                                                                                   // if(lastLine.trim().equals(getNumberPrefix(lastLine.trim()) + ".")) would be true for every number and a dot after
+                            wholeText = selectedText.substring(0, selectedText.length() - (lastLine.length()));
+                            wholeText = wholeText .concat(afterSelectedText);
+                            contentEditText.setText(wholeText);
+                            if(selectionLength < 0)
+                                contentEditText.setSelection(0);
+                            contentEditText.setSelection(selectionLength - (lastLine.length()));
+                        }
+                    }
 
-                    if((lastLine.startsWith("- ") || lastLine.startsWith("+ ")
-                    || lastLine.startsWith("• ")) && !appendRestricted &&
-                            !contentEditText.getText().toString().endsWith("\n\n")){
-                        contentEditText.setText(contentEditText.getText().
-                                append(lastLine.substring(0, 2)));
-                        contentEditText.setSelection(contentEditText.getText().length());
+                    if((lastLine.trim().startsWith("- ") || lastLine.trim().startsWith("+ ")
+                    || lastLine.trim().startsWith("• ")) && !appendRestricted &&
+                            endsWithOneNewLineChar(lastLine)){
+                        wholeText = selectedText.concat(lastLine.substring(0, prefixWhiteSpaces(lastLine) + 2)); // ex: plus 2 for '-' and ' '
+                        wholeText = wholeText.concat(afterSelectedText);
+                        contentEditText.setText(wholeText);
+                        contentEditText.setSelection(selectionLength + prefixWhiteSpaces(lastLine) + 2);
+                    }
+                    else if(conformsToNumberFormat(lastLine.trim()) && endsWithOneNewLineChar(lastLine)){
+                        int numberIncremented = (getNumberPrefix(lastLine.trim()) + 1);
+                        wholeText = selectedText.concat(lastLine.substring(0, prefixWhiteSpaces(lastLine)) + numberIncremented + ". "); // incrementing as well
+                        wholeText = wholeText.concat(afterSelectedText);
+                        contentEditText.setText(wholeText);
+                        contentEditText.setSelection(selectionLength + prefixWhiteSpaces(lastLine) + numberPrefixLength(numberIncremented + "") + 2);
                     }
                 }
             }
@@ -262,6 +298,8 @@ public class NoteEditActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -303,7 +341,75 @@ public class NoteEditActivity extends AppCompatActivity {
             Toast.makeText(this, "Current note saved!", Toast.LENGTH_SHORT).show();
     }
     private String getSplitLastLine(String text, String delimeter){
-        String [] textLines = text.split(delimeter);
-        return textLines[textLines.length - 1];
+        text = ".".concat(text); // prevent trim used below, to trim white line before text
+        String whiteSpaces = text.substring(text.trim().length());
+        String [] textLines = text.trim().split(delimeter);
+        if(textLines.length == 1)
+            return textLines[textLines.length - 1].substring(1) + whiteSpaces; // to remove the "."
+        return textLines[textLines.length - 1] + whiteSpaces;
+    }
+
+    private String getSelection(EditText editText, int selectionLength) {
+        return editText.getText().toString().substring(0, selectionLength);
+    }
+
+    private String getAfterSelection(EditText editText, int selectionLength) {
+        return editText.getText().toString().substring(selectionLength);
+    }
+    private int postFixWhiteSpaces(String text) {
+        text = ".".concat(text);
+        return text.length() - text.trim().length();
+    }
+
+    private int prefixWhiteSpaces(String text) {
+        text = text.concat(".");
+        return text.length() - text.trim().length();
+    }
+
+    private boolean endsWithOneNewLineChar(String text) {
+        int whiteSpaces = postFixWhiteSpaces(text);
+        if(whiteSpaces > 0)
+            if(!text.substring(text.length() - whiteSpaces, text.length() - 1).contains("\n")) //leaving the last char
+                if(text.charAt(text.length() - 1) == '\n') // check if the last char is new line char
+                    return true;
+
+        return false;
+    }
+
+    private boolean conformsToNumberFormat(String text) {
+        if(!(numberPrefixLength(text) > 0))
+            return false;
+        if(!dotAndSpaceAfterDigit(text))
+            return false;
+
+        return true;
+    }
+
+    private int getNumberPrefix(String text) {
+        StringBuilder aNumber = new StringBuilder("0");
+        for(char c : text.toCharArray()){
+            if(Character.isDigit(c))
+                aNumber.append(c);
+            else
+                break;
+        }
+        return Integer.parseInt(aNumber.toString());
+    }
+    private int numberPrefixLength(String text){
+        int numberOfDigits = 0;
+        for(char c : text.toCharArray()){
+            if(Character.isDigit(c))
+                ++numberOfDigits;
+            else
+                break;
+        }
+        return numberOfDigits;
+    }
+
+    private boolean dotAndSpaceAfterDigit(String text){
+        return text.substring(numberPrefixLength(text)).startsWith(". ");
+    }
+    private String trimFront(String text){
+        return text.substring(prefixWhiteSpaces(text));
     }
 }
