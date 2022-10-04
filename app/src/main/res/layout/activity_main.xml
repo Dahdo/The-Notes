@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/maini_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
     <LinearLayout
-        android:id="@+id/root_layout"
+        android:id="@+id/front_page_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
@@ -50,61 +49,42 @@
 
     </LinearLayout>
 
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/linearLayout2"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@color/items_color"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent">-->
-
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/note_image_button"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="48dp"-->
-    <!--            android:layout_margin="@dimen/image_button_margin"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:background="@null"-->
-    <!--            android:contentDescription="@string/note_image_button_description"-->
-    <!--            app:srcCompat="@drawable/ic_baseline_book_24" />-->
-
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/todo_image_button"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="48dp"-->
-    <!--            android:layout_margin="@dimen/image_button_margin"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:background="@null"-->
-    <!--            android:contentDescription="@string/todo_image_button_description"-->
-    <!--            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />-->
-    <!--    </LinearLayout>-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/root_layout">
+        app:layout_constraintTop_toBottomOf="@+id/front_page_head">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/items_color"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_view" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/note_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:srcCompat="@drawable/ic_baseline_add_24"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.util.StringUtil;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import com.dahdotech.thenotes.R;
@@ -19,21 +18,25 @@ import com.dahdotech.thenotes.adapter.OnNoteClickListener;
 import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements OnNoteClickListener {
     public static final String EXTRA_MESSAGE_NEW_NOTE = "newNote";
     public static final String EXTRA_MESSAGE_EXISTING_NOTE = "existingNote";
-    private RecyclerView notesRecyclerView;
+    public static RecyclerView notesRecyclerView;
+    public static LinearLayout frontPageHead;
+    public static BottomNavigationView bottomNavigationView;
+    public static FloatingActionButton fab;
+
     private RecyclerViewAdapter notesRecyclerViewAdapter;
-    private FloatingActionButton fab;
     private SearchView searchView;
+
 
     private View rootView;
 
@@ -43,9 +46,12 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rootView = findViewById(R.id.root_layout);
+        rootView = findViewById(R.id.front_page_head);
 
         fab = findViewById(R.id.note_fab);
+        frontPageHead = findViewById(R.id.front_page_head);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
         NoteViewModel noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
                 this.getApplication()).create(NoteViewModel.class);
@@ -113,4 +119,5 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
         intent.putExtra(EXTRA_MESSAGE_EXISTING_NOTE, postion);
         startActivity(intent);
     }
+
 }
