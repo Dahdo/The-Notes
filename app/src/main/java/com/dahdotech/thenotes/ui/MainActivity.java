@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     public static LinearLayout frontPageHead;
     public static BottomNavigationView bottomNavigationView;
     public static FloatingActionButton fab;
+    public static RecyclerViewAdapter notesRecyclerViewAdapter;
 
-    private RecyclerViewAdapter notesRecyclerViewAdapter;
+
     private SearchView searchView;
 
 
