@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     public static BottomNavigationView bottomNavigationView;
     public static FloatingActionButton fab;
     public static RecyclerViewAdapter notesRecyclerViewAdapter;
+    public static NoteViewModel noteViewModel;
 
 
     private SearchView searchView;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
-        NoteViewModel noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
+        noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
                 this.getApplication()).create(NoteViewModel.class);
 
         notesRecyclerView = findViewById(R.id.recyclerView);

@@ -1,5 +1,7 @@
 package com.dahdotech.thenotes.adapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -17,11 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dahdotech.thenotes.R;
 import com.dahdotech.thenotes.model.Note;
+import com.dahdotech.thenotes.model.NoteViewModel;
 import com.dahdotech.thenotes.ui.MainActivity;
 import com.dahdotech.thenotes.util.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.noteList = noteList;
         this.onNoteClickListener = onNoteClickListener;
     }
+
 
     @NonNull
     @Override
@@ -64,8 +70,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 if(checkAll){
                     holder.unCheckedCheckBox.setVisibility(View.GONE);
                     holder.checkedCheckBox.setVisibility(View.VISIBLE);
+                    notesToDelete.clear();
+                    for (int i = 0; i < noteList.size(); i++)
+                        notesToDelete.add(i); //add all existing notes
                 }
                 else if(unCheckAll){
+                    notesToDelete.clear();
                     holder.checkedCheckBox.setVisibility(View.GONE);
                     holder.unCheckedCheckBox.setVisibility(View.VISIBLE);
                 }
@@ -123,12 +133,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                             //previous notifyDataSetChanged
 
             if(unCheckedCheckBox.getVisibility() == View.VISIBLE){
-                unCheckedCheckBox.setVisibility(View.GONE);
-                checkedCheckBox.setVisibility(View.VISIBLE);
+                this.unCheckedCheckBox.setVisibility(View.GONE);
+                this.checkedCheckBox.setVisibility(View.VISIBLE);
+                notesToDelete.add(getAdapterPosition());
             }
             else {
-                unCheckedCheckBox.setVisibility(View.VISIBLE);
-                checkedCheckBox.setVisibility(View.GONE);
+                this.unCheckedCheckBox.setVisibility(View.VISIBLE);
+                this.checkedCheckBox.setVisibility(View.GONE);
+                notesToDelete.remove(new Integer(getAdapterPosition()));
             }
 
         }
@@ -155,11 +167,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     boolean unCheckAll = false;
     boolean checkIssuesInClickMode = false;
 
+    private ArrayList<Integer> notesToDelete;
+
     //from MainActivity
     private BottomNavigationView bottomNavigationView;
     private LinearLayout frontPageHead;
     private FloatingActionButton fab;
     private RecyclerViewAdapter adapter;
+    private NoteViewModel noteViewModel;
 
 
 
@@ -172,6 +187,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             fab = MainActivity.fab;
             frontPageHead = MainActivity.frontPageHead;
             bottomNavigationView = MainActivity.bottomNavigationView;
+            noteViewModel = MainActivity.noteViewModel;
+            notesToDelete = new ArrayList<>();
             return true;
         }
 
@@ -194,7 +211,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // delete button.
             bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
                 if(item.getItemId() == R.id.delete_forever) {
-                    actionMode.finish();
+                    if(notesToDelete.size() > 0){
+                        AlertDialog.Builder alert = new AlertDialog.Builder(bottomNavigationView.getContext());
+                        alert.setTitle("Delete");
+                        alert.setMessage("Are you sure you want to delete " + notesToDelete.size() + " note(s)?");
+                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                for(int i : notesToDelete)
+                                    noteViewModel.deleteNote(noteList.get(i));
+                                dialog.dismiss();
+                            }
+                        });
+
+                        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        alert.show();
+
+                    }
+                    else{
+                        Snackbar.make(bottomNavigationView, "Select at least one note!", Snackbar.LENGTH_SHORT).show();
+                    }
+
+                   actionMode.finish();
                 }
                 return true;
             });
@@ -237,7 +282,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             actionMode = null; // disable action mode
-            Log.d("CALLED", "yes, its me");
 
             //hide delete icon in bottomNavigation bar show the rest two
             bottomNavigationView.findViewById(R.id.delete_forever).setVisibility(View.GONE);
@@ -245,6 +289,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             bottomNavigationView.findViewById(R.id.todo).setVisibility(View.VISIBLE);
 
             adapter.notifyDataSetChanged(); // restore everything since action mode is first nullified
+            checkTheBox = false;
+            toggleTheCheckBoxes = false;
+            checkAll = false;
+            unCheckAll = false;
+            checkIssuesInClickMode = false;
+            notesToDelete.clear();
 
             //restore front pages and fab
             frontPageHead.setVisibility(View.VISIBLE);
