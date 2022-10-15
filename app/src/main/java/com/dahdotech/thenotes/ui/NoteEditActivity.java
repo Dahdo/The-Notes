@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,6 +43,7 @@ public class NoteEditActivity extends AppCompatActivity {
     private String noteTitle;
     private String noteContent;
     boolean deletedOrUpdated = false; //to avoid errors observing already deleted note object
+    private boolean noteDeleted = false;
 
 
     private final Calendar calendar = Calendar.getInstance();
@@ -64,8 +64,8 @@ public class NoteEditActivity extends AppCompatActivity {
 
 
         //creating modelView instance
-        noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
-                this.getApplication()).create(NoteViewModel.class);
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+
 
         //Creating a new note
         if(getIntent().hasExtra(MainActivity.EXTRA_MESSAGE_NEW_NOTE)){
@@ -94,8 +94,8 @@ public class NoteEditActivity extends AppCompatActivity {
     private void shareEventListener(){
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        String subject = currentNote.getTitle() + "\n----------------------------------------\n";
-        String content = subject + currentNote.getContent();
+        String subject = currentNote.getTitle();
+        String content = currentNote.getContent();
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         shareIntent.putExtra(Intent.EXTRA_TEXT, content);
         startActivity(Intent.createChooser(shareIntent, "Share via"));
@@ -108,6 +108,8 @@ public class NoteEditActivity extends AppCompatActivity {
         alert.setPositiveButton("Sure", (dialog, which) -> {
             deletedOrUpdated = true;
             noteViewModel.deleteNote(currentNote);
+            currentNote = null;
+            noteDeleted = true;
             this.finish();
         });
 
@@ -121,13 +123,13 @@ public class NoteEditActivity extends AppCompatActivity {
         noteTitle = titleEditText.getText().toString().trim();
         noteContent = contentEditText.getText().toString().trim();
         if(!TextUtils.isEmpty(noteTitle) || !TextUtils.isEmpty(noteContent)){
-            if(noteAlreadyExists){
+            if(noteAlreadyExists && !noteDeleted){
                 if(!currentNote.getContent().equals(noteContent) || !currentNote.getTitle().equals(noteTitle)){
                     createUpdateNote(noteTitle, noteContent);
                     success = true;
                 }
             }
-            else {
+            else if(!noteDeleted) {
                 createUpdateNote(noteTitle, noteContent);
                 success = true;
             }
