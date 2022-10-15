@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ import com.dahdotech.thenotes.model.NoteViewModel;
 import com.dahdotech.thenotes.util.Utils;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class NoteEditActivity extends AppCompatActivity {
     private boolean noteAlreadyExists;
@@ -35,9 +37,6 @@ public class NoteEditActivity extends AppCompatActivity {
     private EditText titleEditText;
     private EditText contentEditText;
     private Menu mainMenu;
-    private MenuItem saveMenuItem;
-    private MenuItem shareMenuItem;
-    private MenuItem deleteMenuItem;
 
     NoteViewModel noteViewModel;
 
@@ -46,14 +45,14 @@ public class NoteEditActivity extends AppCompatActivity {
     boolean deletedOrUpdated = false; //to avoid errors observing already deleted note object
 
 
-    private Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_edit);
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow_icon); // display homeAsUp button or back arrow
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.back_arrow_icon); // display homeAsUp button or back arrow
 
 
 
@@ -62,9 +61,6 @@ public class NoteEditActivity extends AppCompatActivity {
         titleEditText = findViewById(R.id.edit_note_title_edit_text);
         contentEditText = findViewById(R.id.edit_note_content_edit_text);
 
-        saveMenuItem = findViewById(R.id.save);
-        shareMenuItem = findViewById(R.id.share);
-        deleteMenuItem = findViewById(R.id.action_delete);
 
         //creating modelView instance
         noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
@@ -169,7 +165,7 @@ public class NoteEditActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.note_edit_menu, menu);
 
-        if(noteAlreadyExists == false){
+        if(!noteAlreadyExists){
             //When it's a new note
             menu.getItem(0).setVisible(false);
             menu.getItem(1).setVisible(false);
@@ -246,9 +242,6 @@ public class NoteEditActivity extends AppCompatActivity {
                     String selectedText = getSelection(contentEditText, selectionLength);
                     String afterSelectedText = getAfterSelection(contentEditText, selectionLength);
                     String lastLine = getSplitLastLine(selectedText, "\n");
-                    Log.d("OHHH", "endIndex: " + selectionLength
-                    + "\nselected: " + selectedText + "test" + "\nafterSelected: " + "test" + afterSelectedText + "end"
-                    + "\nlastLine: " + lastLine + "test");
 
                     if(lastLine.trim().equals("-") || lastLine.trim().equals("+")
                             || lastLine.trim().equals("•")){
@@ -301,6 +294,7 @@ public class NoteEditActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -340,10 +334,10 @@ public class NoteEditActivity extends AppCompatActivity {
         if(saveEventListener())
             Toast.makeText(this, "Current note saved!", Toast.LENGTH_SHORT).show();
     }
-    private String getSplitLastLine(String text, String delimeter){
+    private String getSplitLastLine(String text, String delimiter){
         text = ".".concat(text); // prevent trim used below, to trim white line before text
         String whiteSpaces = text.substring(text.trim().length());
-        String [] textLines = text.trim().split(delimeter);
+        String [] textLines = text.trim().split(delimiter);
         if(textLines.length == 1)
             return textLines[textLines.length - 1].substring(1) + whiteSpaces; // to remove the "."
         return textLines[textLines.length - 1] + whiteSpaces;
@@ -369,9 +363,9 @@ public class NoteEditActivity extends AppCompatActivity {
     private boolean endsWithOneNewLineChar(String text) {
         int whiteSpaces = postFixWhiteSpaces(text);
         if(whiteSpaces > 0)
+            // check if the last char is new line char
             if(!text.substring(text.length() - whiteSpaces, text.length() - 1).contains("\n")) //leaving the last char
-                if(text.charAt(text.length() - 1) == '\n') // check if the last char is new line char
-                    return true;
+                return text.charAt(text.length() - 1) == '\n';
 
         return false;
     }
@@ -379,10 +373,7 @@ public class NoteEditActivity extends AppCompatActivity {
     private boolean conformsToNumberFormat(String text) {
         if(!(numberPrefixLength(text) > 0))
             return false;
-        if(!dotAndSpaceAfterDigit(text))
-            return false;
-
-        return true;
+        return dotAndSpaceAfterDigit(text);
     }
 
     private int getNumberPrefix(String text) {

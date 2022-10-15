@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="null_background">android:background="@null"</style>
 
 
@@ -8,10 +8,11 @@
         <style name="Theme.Design.Light" parent="Theme.AppCompat.Light">
             <!-- Pointer to Overflow style ***MUST*** go here or it will not work -->
             <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
+            <!-- actionMode bar, setting custom back arrow-->
+            <item name="android:actionModeCloseDrawable">@drawable/back_arrow_icon</item>
         </style>
         <!-- Styles -->
         <style name="OverFlow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
             <item name="android:src">@drawable/more_more_icon</item>
         </style>
-
 </resources>

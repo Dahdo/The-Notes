@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/checkbox_action_mode"
-        android:icon="@drawable/ic_check_box_outline"
-        android:title="Select All"
-        app:showAsAction="always"
+        android:icon="@drawable/check_box_outline2"
+        android:title="@string/select_all_string"
+        app:showAsAction="ifRoom"
         android:orderInCategory="1"/>
     <item
         android:id="@+id/checkbox_action_mode_checked"
-        android:icon="@drawable/ic_check_box_filled"
-        android:title="Deselect All"
+        android:icon="@drawable/check_box_filled2"
+        android:title="@string/deselect_all_string"
         app:showAsAction="always"
         android:visible="false"
         android:orderInCategory="1"/>

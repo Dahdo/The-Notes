@@ -5,15 +5,15 @@
         android:id="@+id/share"
         android:icon="@drawable/share_share_icon"
         android:orderInCategory="10"
-        app:showAsAction="always"
-        android:title="Share" />
+        app:showAsAction="ifRoom"
+        android:title="@string/share_string" />
 
     <item
         android:id="@+id/save"
         android:icon="@drawable/save_done_icon"
         android:orderInCategory="20"
         app:showAsAction="always"
-        android:title="Save" />
+        android:title="@string/save_string" />
 
 <!--    <item-->
 <!--        android:id="@+id/action_hide"-->

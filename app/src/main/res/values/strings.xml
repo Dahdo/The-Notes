@@ -1,11 +1,25 @@
 <resources>
-    <string name="app_name">The Notes</string>
-    <string name="app_title">The Notes</string>
-    <string name="app_name_text_view">Note</string>
+    <string name="app_name">NoteEasy</string>
+    <string name="app_title">NoteEasy</string>
+    <string name="app_name_text_view">Notes</string>
     <string name="note_image_button_description">Note button</string>
     <string name="todo_image_button_description">todo button</string>
     <string name="action_delete">Delete</string>
     <string name="action_hide">Hide</string>
     <string name="search_hint">Search Notes</string>
     <string name="detele_forever_desc">Delete forever</string>
+    <string name="fab_description">Add new note</string>
+    <string name="delete_forever_desc">Delete forever</string>
+    <string name="title_hint">Title</string>
+    <string name="editor_hint">Type something...</string>
+    <string name="content_desc">Text editor, enter your notes</string>
+    <string name="checked">Checked</string>
+    <string name="unchecked">unchecked</string>
+    <string name="notes_string">Notes</string>
+    <string name="delete_forever_string">Delete Forever</string>
+    <string name="todo_string">Todo</string>
+    <string name="select_all_string">Select All</string>
+    <string name="deselect_all_string">Deselect All</string>
+    <string name="share_string">Share</string>
+    <string name="save_string">Save</string>
 </resources>

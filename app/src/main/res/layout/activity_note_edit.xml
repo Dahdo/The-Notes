@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="something"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,20 +21,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="0dp"
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:ems="10"
-        android:hint="Title"
+        android:hint="@string/title_hint"
         android:inputType="none"
         android:maxLines="5"
         android:minHeight="24dp"
-        android:textSize="24dp"
         android:onClick="onClickTitleEdit"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_note_time_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_note_time_text_view"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+        android:importantForAutofill="no" />
 
 
     <EditText
@@ -47,15 +47,17 @@
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:ems="10"
-        android:gravity="top|left"
-        android:hint="Type something..."
+        android:gravity="start|top"
+        android:hint="@string/editor_hint"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:onClick="onClickContentEdit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_note_title_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_note_title_edit_text"
+        tools:ignore="TextContrastCheck" />
 
     <!--    <LinearLayout-->
     <!--        android:id="@+id/linearLayout2"-->

@@ -1,6 +1,7 @@
 package com.dahdotech.thenotes.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
@@ -18,11 +20,9 @@ import com.dahdotech.thenotes.adapter.OnNoteClickListener;
 import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     public static final String EXTRA_MESSAGE_EXISTING_NOTE = "existingNote";
     public static RecyclerView notesRecyclerView;
     public static LinearLayout frontPageHead;
-    public static BottomNavigationView bottomNavigationView;
+    public static CardView deleteCardView;
+    public static ImageView deleteImageView;
     public static FloatingActionButton fab;
     public static RecyclerViewAdapter notesRecyclerViewAdapter;
     public static NoteViewModel noteViewModel;
@@ -42,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
 
     private View rootView;
 
-    private Calendar calendar = Calendar.getInstance();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
         fab = findViewById(R.id.note_fab);
         frontPageHead = findViewById(R.id.front_page_head);
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        deleteCardView = findViewById(R.id.delete_card_view);
+        deleteImageView = findViewById(R.id.delete_forever_image);
 
         noteViewModel = new ViewModelProvider.AndroidViewModelFactory(
                 this.getApplication()).create(NoteViewModel.class);
@@ -79,15 +79,14 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView =
-                (SearchView)findViewById(R.id.search);
+        searchView = findViewById(R.id.search);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 noteViewModel.getAllNotes().observe(MainActivity.this, notes -> {
-                    List<Note> matchingNotes = new ArrayList<Note>();
+                    List<Note> matchingNotes = new ArrayList<>();
                     for(Note note : notes){
                         if(note.getTitle().toLowerCase().contains(s.toLowerCase()) || note.getContent().toLowerCase().contains(s.toLowerCase())){
                             matchingNotes.add(note);
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
                 return true;
             }
         });
-
     }
 
     @Override
@@ -116,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     }
 
     @Override
-    public void onNoteClick(int postion) {
+    public void onNoteClick(int position) {
         Intent intent = new Intent(MainActivity.this, NoteEditActivity.class);
-        intent.putExtra(EXTRA_MESSAGE_EXISTING_NOTE, postion);
+        intent.putExtra(EXTRA_MESSAGE_EXISTING_NOTE, position);
         startActivity(intent);
     }
 

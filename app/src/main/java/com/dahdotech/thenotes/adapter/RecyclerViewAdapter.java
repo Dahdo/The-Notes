@@ -1,8 +1,6 @@
 package com.dahdotech.thenotes.adapter;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,10 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dahdotech.thenotes.R;
@@ -22,7 +22,6 @@ import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
 import com.dahdotech.thenotes.ui.MainActivity;
 import com.dahdotech.thenotes.util.Utils;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -140,7 +139,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             else {
                 this.unCheckedCheckBox.setVisibility(View.VISIBLE);
                 this.checkedCheckBox.setVisibility(View.GONE);
-                notesToDelete.remove(new Integer(getAdapterPosition()));
+                notesToDelete.remove(Integer.valueOf(getAdapterPosition()));
             }
 
         }
@@ -170,7 +169,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Integer> notesToDelete;
 
     //from MainActivity
-    private BottomNavigationView bottomNavigationView;
+    private CardView deleteCardView;
+    private ImageView deleteImageView;
     private LinearLayout frontPageHead;
     private FloatingActionButton fab;
     private RecyclerViewAdapter adapter;
@@ -186,7 +186,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             adapter = MainActivity.notesRecyclerViewAdapter;
             fab = MainActivity.fab;
             frontPageHead = MainActivity.frontPageHead;
-            bottomNavigationView = MainActivity.bottomNavigationView;
+            deleteCardView = MainActivity.deleteCardView;
+            deleteImageView = MainActivity.deleteImageView;
             noteViewModel = MainActivity.noteViewModel;
             notesToDelete = new ArrayList<>();
             return true;
@@ -194,10 +195,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-
-            bottomNavigationView.findViewById(R.id.delete_forever).setVisibility(View.VISIBLE);
-            bottomNavigationView.findViewById(R.id.notes).setVisibility(View.GONE);
-            bottomNavigationView.findViewById(R.id.todo).setVisibility(View.GONE);
+            deleteCardView.setVisibility(View.VISIBLE);
 
             //at start. to show all checkboxes
             checkTheBox = true;
@@ -209,41 +207,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             fab.setVisibility(View.GONE);
 
             // delete button.
-            bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-                if(item.getItemId() == R.id.delete_forever) {
-                    if(notesToDelete.size() > 0){
-                        AlertDialog.Builder alert = new AlertDialog.Builder(bottomNavigationView.getContext());
-                        alert.setTitle("Delete");
-                        alert.setMessage("Are you sure you want to delete " + notesToDelete.size() + " note(s)?");
-                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                for(int i : notesToDelete)
-                                    noteViewModel.deleteNote(noteList.get(i));
-                                dialog.dismiss();
-                            }
-                        });
+            deleteImageView.setOnClickListener(view -> {
+                if(notesToDelete.size() > 0){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(deleteImageView.getContext());
+                    alert.setTitle("Delete");
+                    alert.setMessage("Are you sure you want to delete " + notesToDelete.size() + " note(s)?");
+                    alert.setPositiveButton("Yes", (dialog, which) -> {
+                        for(int i : notesToDelete)
+                            noteViewModel.deleteNote(noteList.get(i));
+                        dialog.dismiss();
+                        actionMode.finish();
+                    });
 
-                        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                        alert.show();
-
-                    }
-                    else{
-                        Snackbar.make(bottomNavigationView, "Select at least one note!", Snackbar.LENGTH_SHORT).show();
-                    }
-
-                   actionMode.finish();
+                    alert.show();
                 }
-                return true;
+                else{
+                    Snackbar.make(deleteImageView, "Select at least one note!", Snackbar.LENGTH_SHORT).show();
+                }
             });
-
             return true;
         }
 
@@ -284,9 +267,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             actionMode = null; // disable action mode
 
             //hide delete icon in bottomNavigation bar show the rest two
-            bottomNavigationView.findViewById(R.id.delete_forever).setVisibility(View.GONE);
-            bottomNavigationView.findViewById(R.id.notes).setVisibility(View.VISIBLE);
-            bottomNavigationView.findViewById(R.id.todo).setVisibility(View.VISIBLE);
+            deleteCardView.setVisibility(View.GONE);
 
             adapter.notifyDataSetChanged(); // restore everything since action mode is first nullified
             checkTheBox = false;

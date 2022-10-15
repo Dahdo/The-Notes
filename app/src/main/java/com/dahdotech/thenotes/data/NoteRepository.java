@@ -10,7 +10,7 @@ import com.dahdotech.thenotes.util.NoteRoomDatabase;
 import java.util.List;
 
 public class NoteRepository {
-    private LiveData<List<Note>> allNotes;
+    private final LiveData<List<Note>> allNotes;
     private static NoteDao noteDao;
 
     public NoteRepository(Application application){
@@ -20,27 +20,19 @@ public class NoteRepository {
     }
 
     public static void insert(Note note){
-        NoteRoomDatabase.dataWriterExecutor.execute(() ->{
-            noteDao.insert(note);
-        });
+        NoteRoomDatabase.dataWriterExecutor.execute(() -> noteDao.insert(note));
     }
 
     public void update(Note note){
-        NoteRoomDatabase.dataWriterExecutor.execute(() ->{
-            noteDao.update(note);
-        });
+        NoteRoomDatabase.dataWriterExecutor.execute(() -> noteDao.update(note));
     }
 
     public void delete(Note note){
-        NoteRoomDatabase.dataWriterExecutor.execute(()->{
-            noteDao.delete(note);
-        });
+        NoteRoomDatabase.dataWriterExecutor.execute(()-> noteDao.delete(note));
     }
 
     public void deleteAll(){
-        NoteRoomDatabase.dataWriterExecutor.execute(()->{
-            noteDao.deleteAll();
-        });
+        NoteRoomDatabase.dataWriterExecutor.execute(()-> noteDao.deleteAll());
     }
 
     public LiveData<Note> get(int id){
