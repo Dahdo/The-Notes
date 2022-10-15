@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -101,9 +102,17 @@ public class NoteEditActivity extends AppCompatActivity {
     }
 
     private void deleteEventListener(){
-        deletedOrUpdated = true;
-        noteViewModel.deleteNote(currentNote);
-        this.finish();
+        AlertDialog.Builder alert = new AlertDialog.Builder(contentEditText.getContext());
+        alert.setTitle("Delete");
+        alert.setMessage("Are you sure you want to delete this note?");
+        alert.setPositiveButton("Sure", (dialog, which) -> {
+            deletedOrUpdated = true;
+            noteViewModel.deleteNote(currentNote);
+            this.finish();
+        });
+
+        alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        alert.show();
     }
 
     private boolean saveEventListener(){

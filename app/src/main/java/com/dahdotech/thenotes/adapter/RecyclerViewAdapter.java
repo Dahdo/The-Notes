@@ -212,7 +212,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     AlertDialog.Builder alert = new AlertDialog.Builder(deleteImageView.getContext());
                     alert.setTitle("Delete");
                     alert.setMessage("Are you sure you want to delete " + notesToDelete.size() + " note(s)?");
-                    alert.setPositiveButton("Yes", (dialog, which) -> {
+                    alert.setPositiveButton("Sure", (dialog, which) -> {
                         for(int i : notesToDelete)
                             noteViewModel.deleteNote(noteList.get(i));
                         dialog.dismiss();
