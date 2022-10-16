@@ -6,88 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".ui.NoteEditActivity">
 
-    <TextView
-        android:id="@+id/edit_note_time_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edit_note_title_edit_text"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@null"
-        android:ems="10"
-        android:hint="@string/title_hint"
-        android:inputType="none"
-        android:maxLines="5"
-        android:minHeight="24dp"
-        android:onClick="onClickTitleEdit"
-        android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_note_time_text_view"
-        tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/edit_note_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edit_note_title_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@null"
+                android:ems="10"
+                android:hint="@string/title_hint"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:maxLength="100"
+                android:maxLines="5"
+                android:minHeight="24dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
 
-    <EditText
-        android:id="@+id/edit_note_content_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:background="@null"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/editor_hint"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:onClick="onClickContentEdit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_note_title_edit_text"
-        tools:ignore="TextContrastCheck" />
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/linearLayout2"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@color/items_color"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent">-->
-
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/note_image_button"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="48dp"-->
-    <!--            android:layout_margin="@dimen/image_button_margin"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:background="@null"-->
-    <!--            android:contentDescription="@string/note_image_button_description"-->
-    <!--            app:srcCompat="@drawable/ic_baseline_book_24" />-->
-
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/todo_image_button"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="48dp"-->
-    <!--            android:layout_margin="@dimen/image_button_margin"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:background="@null"-->
-    <!--            android:contentDescription="@string/todo_image_button_description"-->
-    <!--            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />-->
-    <!--    </LinearLayout>-->
-
+            <EditText
+                android:id="@+id/edit_note_content_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/editor_hint"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:maxLength="10000"
+                android:minHeight="48dp"
+                tools:ignore="TextContrastCheck" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

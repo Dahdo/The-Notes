@@ -88,7 +88,12 @@ public class NoteEditActivity extends AppCompatActivity {
             });
             timeTextView.setText(new Utils().shortDateFormat(Calendar.getInstance().getTime()));
         }
-
+        contentEditText.setOnClickListener(view -> {
+            onClickContentEdit(view);
+        });
+        titleEditText.setOnClickListener(view -> {
+            onClickTitleEdit(view);
+        });
     }
 
     private void shareEventListener(){
@@ -191,6 +196,8 @@ public class NoteEditActivity extends AppCompatActivity {
         titleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(s.length() >= 100)
+                    Toast.makeText(NoteEditActivity.this, "Character limit reached!", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -224,11 +231,14 @@ public class NoteEditActivity extends AppCompatActivity {
         contentEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(s.length() >= 10000)
+                    Toast.makeText(NoteEditActivity.this, "Character limit reached!", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int lengthBefore, int lengthAfter) {
+
                 if(s.length() == 0 && titleEditText.getText().toString().isEmpty()){
                     //hide all menuItems
                     menu.getItem(0).setVisible(false);
@@ -343,7 +353,7 @@ public class NoteEditActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(saveEventListener())
-            Toast.makeText(this, "Current note saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Progress saved!", Toast.LENGTH_SHORT).show();
     }
     private String getSplitLastLine(String text, String delimiter){
         text = ".".concat(text); // prevent trim used below, to trim white line before text
@@ -414,4 +424,5 @@ public class NoteEditActivity extends AppCompatActivity {
     private String trimFront(String text){
         return text.substring(prefixWhiteSpaces(text));
     }
+
 }

@@ -9,7 +9,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.178" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.178" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_note_edit.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_note_edit.xml" value="0.25" />
         <entry key="app/src/main/res/layout/task_row.xml" value="0.22" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_navigation_view.xml" value="0.1" />
