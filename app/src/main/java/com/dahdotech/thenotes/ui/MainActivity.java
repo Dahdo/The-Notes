@@ -1,6 +1,7 @@
 package com.dahdotech.thenotes.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
 
 
     private SearchView searchView;
-
+    public static CardView searchCardView;
 
     private View rootView;
 
@@ -47,7 +49,12 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setElevation(0);
+
         rootView = findViewById(R.id.front_page_head);
+        searchCardView = findViewById(R.id.searchCardView);
 
         fab = findViewById(R.id.note_fab);
         frontPageHead = findViewById(R.id.front_page_head);
@@ -118,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
         Intent intent = new Intent(MainActivity.this, NoteEditActivity.class);
         intent.putExtra(EXTRA_MESSAGE_EXISTING_NOTE, position);
         startActivity(intent);
+    }
+
+    public boolean isNightMode() {
+        int nightModeFlags = getApplicationContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
     }
 
 }

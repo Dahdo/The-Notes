@@ -1,6 +1,7 @@
 package com.dahdotech.thenotes.adapter;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,9 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStructure;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private final List<Note> noteList;
@@ -171,10 +175,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     //from MainActivity
     private CardView deleteCardView;
     private ImageView deleteImageView;
-    private LinearLayout frontPageHead;
+    //private LinearLayout frontPageHead; //stopped hiding the head.. to avoid awkward view movements
     private FloatingActionButton fab;
     private RecyclerViewAdapter adapter;
     private NoteViewModel noteViewModel;
+    private CardView searchCardView;
 
 
 
@@ -185,16 +190,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             menuInflater.inflate(R.menu.context_menu, menu);
             adapter = MainActivity.notesRecyclerViewAdapter;
             fab = MainActivity.fab;
-            frontPageHead = MainActivity.frontPageHead;
+            //frontPageHead = MainActivity.frontPageHead;
             deleteCardView = MainActivity.deleteCardView;
             deleteImageView = MainActivity.deleteImageView;
             noteViewModel = MainActivity.noteViewModel;
+            searchCardView = MainActivity.searchCardView;
             notesToDelete = new ArrayList<>();
             return true;
         }
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            searchCardView.setVisibility(View.GONE);
+
             deleteCardView.setVisibility(View.VISIBLE);
 
             //at start. to show all checkboxes
@@ -203,13 +211,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if(adapter != null)
                 adapter.notifyDataSetChanged();
 
-            frontPageHead.setVisibility(View.GONE);
+            //frontPageHead.setVisibility(View.GONE);
             fab.setVisibility(View.GONE);
 
             // delete button.
             deleteImageView.setOnClickListener(view -> {
                 if(notesToDelete.size() > 0){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(deleteImageView.getContext());
+                    AlertDialog.Builder alert = new AlertDialog.Builder(deleteImageView.getContext(), R.style.AlertDialogCustom);
                     alert.setTitle("Delete");
                     alert.setMessage("Are you sure you want to delete " + notesToDelete.size() + " note(s)?");
                     alert.setPositiveButton("Sure", (dialog, which) -> {
@@ -221,7 +229,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                     alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
 
-                    alert.show();
+                    alert.show().getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
                 }
                 else{
                     Snackbar.make(deleteImageView, "Select at least one note!", Snackbar.LENGTH_SHORT).show();
@@ -278,7 +286,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             notesToDelete.clear();
 
             //restore front pages and fab
-            frontPageHead.setVisibility(View.VISIBLE);
+            //frontPageHead.setVisibility(View.VISIBLE);
+            searchCardView.setVisibility(View.VISIBLE);
             fab.setVisibility(View.VISIBLE);
         }
     };

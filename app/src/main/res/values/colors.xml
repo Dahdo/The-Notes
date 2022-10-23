@@ -10,4 +10,5 @@
     <color name="items_color">#D0D0D0</color>
     <color name="delete_card_view_color">#202124</color>
     <color name="fab_color">#28A871</color>
+    <color name="myAccent">#28A745</color>
 </resources>

@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/items_color"
+            android:background="?android:attr/colorButtonNormal"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -40,7 +40,7 @@
                     android:ems="16"
                     android:gravity="start"
                     android:maxLines="1"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:maxLines="1"
-                android:textColor="@color/black"
+                android:textColor="?android:attr/textColorPrimaryDisableOnly"
                 android:textSize="13sp" />
 
             <LinearLayout

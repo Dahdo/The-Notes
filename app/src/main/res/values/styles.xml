@@ -2,10 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="null_background">android:background="@null"</style>
 
-
     <!-- changing menu overflow icon -->
         <!-- Base application theme. -->
-        <style name="Theme.Design.Light" parent="Theme.AppCompat.Light">
+        <style name="Theme.Design" parent="Theme.MaterialComponents.DayNight">
             <!-- Pointer to Overflow style ***MUST*** go here or it will not work -->
             <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
             <!-- actionMode bar, setting custom back arrow-->
@@ -15,4 +14,12 @@
         <style name="OverFlow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
             <item name="android:src">@drawable/more_more_icon</item>
         </style>
+
+    <style name="AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textColorPrimary">#595959</item>
+        <item name="android:colorAccent">@color/myAccent</item>
+    </style>
+
+
 </resources>

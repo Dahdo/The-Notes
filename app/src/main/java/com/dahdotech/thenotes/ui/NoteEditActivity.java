@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -53,6 +54,9 @@ public class NoteEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_edit);
 
+        getSupportActionBar().setTitle("Note");
+        getSupportActionBar().setElevation(0);
+
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.back_arrow_icon); // display homeAsUp button or back arrow
 
 
@@ -77,6 +81,9 @@ public class NoteEditActivity extends AppCompatActivity {
         //updating an existing note
         if(getIntent().hasExtra(MainActivity.EXTRA_MESSAGE_EXISTING_NOTE)){
             noteAlreadyExists = true;
+            new Utils().collapseKeyboard(this);
+            contentEditText.setFocusable(false);
+            titleEditText.setFocusable(false);
             int noteId = getIntent().
                     getIntExtra(MainActivity.EXTRA_MESSAGE_EXISTING_NOTE, 0);
             noteViewModel.getAllNotes().observe(this, notes -> {
@@ -86,7 +93,7 @@ public class NoteEditActivity extends AppCompatActivity {
                     contentEditText.setText(currentNote.getContent());
                 }
             });
-            timeTextView.setText(new Utils().shortDateFormat(Calendar.getInstance().getTime()));
+            timeTextView.setText(new Utils().longDateFormat(Calendar.getInstance().getTime()));
         }
         contentEditText.setOnClickListener(view -> {
             onClickContentEdit(view);
@@ -107,7 +114,7 @@ public class NoteEditActivity extends AppCompatActivity {
     }
 
     private void deleteEventListener(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(contentEditText.getContext());
+        AlertDialog.Builder alert = new AlertDialog.Builder(contentEditText.getContext(), R.style.AlertDialogCustom);
         alert.setTitle("Delete");
         alert.setMessage("Are you sure you want to delete this note?");
         alert.setPositiveButton("Sure", (dialog, which) -> {
@@ -119,7 +126,8 @@ public class NoteEditActivity extends AppCompatActivity {
         });
 
         alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        alert.show();
+        alert.show().getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+//
     }
 
     private boolean saveEventListener(){
