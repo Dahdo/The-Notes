@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.dahdotech.thenotes.ui.MainActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,4 +44,5 @@ public class Utils {
             inputMethodManager.showSoftInputFromInputMethod(view.getWindowToken(), 0);
         }
     }
+
 }

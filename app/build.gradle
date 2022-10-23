@@ -47,4 +47,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
     implementation 'androidx.appcompat:appcompat:1.5.1'
 
+
 }

@@ -1,5 +1,6 @@
 package com.dahdotech.thenotes.ui;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
@@ -11,6 +12,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import com.dahdotech.thenotes.adapter.OnNoteClickListener;
 import com.dahdotech.thenotes.adapter.RecyclerViewAdapter;
 import com.dahdotech.thenotes.model.Note;
 import com.dahdotech.thenotes.model.NoteViewModel;
+import com.dahdotech.thenotes.util.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
 
     private View rootView;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,9 +113,25 @@ public class MainActivity extends AppCompatActivity implements OnNoteClickListen
             @Override
             public boolean onQueryTextChange(String s) {
                 onQueryTextSubmit(s);
+                if(s.equals("")){
+                    fab.setVisibility(View.VISIBLE);
+                    searchView.clearFocus(); // to trigger fab hiding below
+                }
+                else if(!s.equals(""))
+                    fab.setVisibility(View.GONE);
                 return true;
             }
         });
+
+         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+             @Override
+             public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus)
+                    fab.setVisibility(View.GONE);
+                if(!hasFocus)
+                    fab.setVisibility(View.VISIBLE);
+             }
+         });
     }
 
     @Override

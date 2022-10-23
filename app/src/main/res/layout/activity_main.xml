@@ -40,6 +40,7 @@
                 android:clickable="true"
                 android:background="?android:attr/colorButtonNormal"
                 android:iconifiedByDefault="false"
+                android:closeIcon="@null"
                 android:queryBackground="@android:color/transparent"
                 android:queryHint="Search Notes"
                 app:queryBackground="@android:color/transparent">
