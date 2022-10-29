@@ -329,6 +329,7 @@ public class NoteEditActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.save:
                 saveEventListener();
+                restartCurrentActivity();
                 return true;
             case R.id.action_delete:
                 deleteEventListener();
@@ -363,6 +364,13 @@ public class NoteEditActivity extends AppCompatActivity {
         if(saveEventListener())
             Toast.makeText(this, "Progress saved!", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        restartCurrentActivity();
+    }
+
     private String getSplitLastLine(String text, String delimiter){
         text = ".".concat(text); // prevent trim used below, to trim white line before text
         String whiteSpaces = text.substring(text.trim().length());
@@ -431,6 +439,16 @@ public class NoteEditActivity extends AppCompatActivity {
     }
     private String trimFront(String text){
         return text.substring(prefixWhiteSpaces(text));
+    }
+
+    private void restartCurrentActivity(){
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);
+        Intent intent = getIntent();
+        intent.putExtra(MainActivity.EXTRA_MESSAGE_EXISTING_NOTE, 0);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
 }
