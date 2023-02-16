@@ -6,9 +6,9 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.dahdotech.thenotes"
+        applicationId "com.dahdo.thenotes"
         minSdk 22
-        targetSdk 26
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -18,7 +18,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
         }
     }
     compileOptions {
